@@ -1,14 +1,21 @@
-import { takeEvery, all, put, call } from 'redux-saga/effects';
+import { takeEvery, all, put } from 'redux-saga/effects';
 import * as actions from './actions.js';
+// eslint-disable-next-line import/no-cycle
+import { store } from '../store.js';
 
+const supabaseUrl = 'https://oxbvwneuarcrvlunhgor.supabase.co';
+const supabaseKey = process.env.SUPABASE_KEY;
+const sp = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-function* load({ minHeight=140, maxHeight=190 }) {
+function* load({ minHeight = 140, maxHeight = 190 }) {
   try {
-    const response = yield call(
-      fetch,
-      `https://api.sheety.co/6039e31752df53abe245cb37883f37e2/ebikesSheetyDemo/sheet1?filter=[minimumHeight]=${minHeight}&filter[maximumHeight]=${maxHeight}`);
-    const list = yield response.json();
-    yield put({ type: actions.LOAD_SUCCESS, data:list.sheet1 })
+    sp.from('bikes')
+      .select('*')
+      .eq('min_height', minHeight)
+      .eq('max_height', maxHeight)
+      .then(data => {
+        store.dispatch({ type: actions.LOAD_SUCCESS, data: data.data });
+      });
   } catch (error) {
     yield put({ type: actions.LOAD_FAILED });
   }
@@ -18,9 +25,7 @@ function* load({ minHeight=140, maxHeight=190 }) {
  * Init Saga.
  */
 function* appSaga() {
-  yield all([
-    takeEvery(actions.LOAD, load)
-  ]);
+  yield all([takeEvery(actions.LOAD, load)]);
 }
 
 export default appSaga;
