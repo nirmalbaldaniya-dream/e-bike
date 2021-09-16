@@ -16,8 +16,8 @@ export class MyFilters extends BaseComponent {
 
   constructor() {
     super();
-    this._minHeight = 140;
-    this._maxHeight = 190;
+    this._minHeight = 160;
+    this._maxHeight = 180;
   }
 
   connectedCallback() {
@@ -43,7 +43,7 @@ export class MyFilters extends BaseComponent {
         withTickMarks
         step="10"
         min="100"
-        max="200"
+        max="300"
         valueStart="${this._minHeight}"
         valueEnd="${this._maxHeight}"
       >
