@@ -3,16 +3,16 @@ import * as actions from './actions.js';
 // eslint-disable-next-line import/no-cycle
 import { store } from '../store.js';
 
-const supabaseUrl = 'https://oxbvwneuarcrvlunhgor.supabase.co';
+const supabaseUrl = 'https://bkxkdsjsfbnqncfhispl.supabase.co';
 const supabaseKey = process.env.SUPABASE_KEY;
 const sp = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 function* load({ minHeight = 140, maxHeight = 190 }) {
   try {
-    sp.from('bikes')
+    sp.from('test-bikes-height')
       .select('*')
-      .eq('min_height', minHeight)
-      .eq('max_height', maxHeight)
+      .eq('minimum_height', minHeight)
+      .eq('maximum_height', maxHeight)
       .then(data => {
         store.dispatch({ type: actions.LOAD_SUCCESS, data: data.data });
       });
