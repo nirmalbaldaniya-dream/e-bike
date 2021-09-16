@@ -5,10 +5,6 @@ import './my-filters.js';
 import './filtered-list.js';
 
 export class MyApp extends ConnectedBaseComponent {
-  static get properties() {
-    return {};
-  }
-
   render() {
     return html`
       <app-header></app-header>
